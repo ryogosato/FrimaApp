@@ -1,0 +1,9 @@
+%ul.option__like
+  - if !Favorite.exists?(user_id: current_user.id, item_id: @item.id)
+    %li.option__like-btn1-off
+      %i.fas.fa-star
+        = link_to "お気に入り#{@favorites}", item_favorites_path(@item), method: :post
+  - else
+    %li.option__like-btn1-on
+      %i.fas.fa-star
+        = link_to "お気に入り#{@favorites}", item_favorite_path(@item), method: :delete 

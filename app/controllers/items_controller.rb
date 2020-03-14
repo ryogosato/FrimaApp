@@ -14,6 +14,8 @@ class ItemsController < ApplicationController
     @shipping_day = Item.shipping_days.keys[@item.shipping_days-1]
     @area = Item.prefectures.keys[@item.area-1]
     @brand = Brand.find(@item.brand_id)
+    @favorite = Favorite.all
+    @favorites = @favorite.where(item_id: @item.id).count
   end
 
   def confirm

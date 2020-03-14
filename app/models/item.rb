@@ -23,4 +23,6 @@ class Item < ApplicationRecord
   belongs_to :user, optional: true
   has_many :images, dependent: :destroy
   belongs_to :category,  optional: true
+  has_many :favorites
+  has_many :users, through: :favorites
 end

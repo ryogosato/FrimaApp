@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   end
 
   resources :items, only:[:show, :new, :create, :edit, :destroy] do
+    resources :favorites, only:[:create, :destroy]
+    # post 'add' => 'favorites#create'
+    # delete '/add' => 'favorites#destroy'
     member do
       get 'confirm', to: 'items#confirm'
       post 'pay', to: 'items#pay'

@@ -12,5 +12,7 @@ class User < ApplicationRecord
   validates :furigana_last, presence: true
   validates :birthdate, presence: true
   devise :validatable, password_length: 6..128
+  has_many :favorites
+  has_many :fav_items, through: :favorites, source: :item
 end
 
