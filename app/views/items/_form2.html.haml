@@ -1,0 +1,136 @@
+.container
+  .side-bar
+    %section.side-bar__group
+      %h2.side-bar__group__title
+        マイページメニュー
+      %li.side-bar__group__list
+        = link_to "お知らせ", "#"
+      %li.side-bar__group__list
+        = link_to "いいねした商品", "#"
+    %section.side-bar__group
+      %h2.side-bar__group__title
+        商品を出品する
+      %li.side-bar__group__list
+        = link_to "商品を出品する", new_item_path
+      %li.side-bar__group__list
+        = link_to "出品した商品", "#"
+      %li.side-bar__group__list
+        = link_to "自分のショップを見る", "#"
+    %section.side-bar__group
+      %h2.side-bar__group__title
+        商品を購入する
+      %li.side-bar__group__list
+        = link_to "購入した商品", "#"
+      %li.side-bar__group__list
+        = link_to "最近見た商品", "#"
+      %li.side-bar__group__list
+        = link_to "コメントした商品", "#"
+    %section.side-bar__group
+      %h2.side-bar__group__title
+        設定・ヘルプ・その他
+      %li.side-bar__group__list
+        = link_to "売上・ポイント管理", "#"
+      %li.side-bar__group__list
+        = link_to "クーポンの確認", "#"
+      %li.side-bar__group__list
+        = link_to "設定", "#"
+      %li.side-bar__group__list
+        = link_to "お問い合わせ", "#"
+      %li.side-bar__group__list
+        = link_to "ラクマ公式ガイド", "#"
+      %li.side-bar__group__list
+        = link_to "はじめての方へ", "#"
+      %li.side-bar__group__list
+        = link_to "ログアウト", "#"
+
+  .main-items
+    = form_with model: @item, local: true do |f|
+      .wrapper.image-wrapper
+        #image-box.image-wrapper__image-box
+          = f.fields_for :images do |i|
+            .image-wrapper__image-box__js.js-file_group{data:{index: "#{i.index}"}}
+              = i.label :content, class: "image-wrapper__image-box__js__label" do
+                .image-wrapper__image-box__js__label__image.img_field{id: "img_field--#{i.index}", onClick: "$('#file').click()"}
+                  - if @item.images[i.index][:content].present?
+                    -# - @images.each_with_index do |img, a|
+                    = image_tag asset_path(@images[i.index].content) 
+                      
+                  - else
+                    = image_tag 'icon_camera.png', class: "image-wrapper__image-box__js__label__image__url" 
+                = i.file_field :content, class: "image-wrapper__image-box__js__label__file js-file", id: "item_images_attributes_#{i.index}_content"
+              .js-remove
+                %span.js-remove__text
+                  削除
+      
+
+      .wrapper.name-wrapper
+        %label.wrapper__label
+          商品名：
+          %span.required
+            ※必須
+          = f.text_field :name, placeholder: "40字まで", class: "name-wrapper__name form-control", required: "required"
+      .wrapper.description-wrapper
+        %label.wrapper__label
+          商品説明：
+          %span.required
+            ※必須
+          = f.text_area :description, placaeholder: "色・素材・重さ・定価・注意点などを書きましょう（1000文字まで）", class: "name-wrapper__description form-control", required: "required", size: "40 x 10"
+      .form-separator
+
+      .wrapper.category-wrapper
+        = f.label :category_id , class: 'wrapper__label category-wrapper-label', id: "wrapper__label--category" do
+          カテゴリー：
+          %span.required ※必須
+          .category-wrapper-box
+            .category-wrapper-select
+              .category-wrapper-select__box
+                = f.select :parent_name, @category_parent_array, {}, {class: 'category-wrapper__category form-control', id: 'parent_category'}
+
+      .wrapper.brand-wrapper
+        %label.wrapper__label
+          ブランド：
+          = f.select :brand_id, options_for_select(@brands.map{|b| [b.name, b.id, {}]}, {prompt: "指定なし", selected: @item.brand_id}),{}, {class: "brand-wrapper__brand form-control"}
+          
+      .wrapper.condition-wrapper
+        %label.wrapper__label
+          商品の状態：
+          %span.required
+            ※必須
+          = f.select :condition, Item.conditions.keys, {prompt: "指定なし", selected: @item.condition}, {class: "condition-wrapper__condition form-control", required: "required"}
+      .form-separator
+
+      .wrapper.fee-wrapper
+        %label.wrapper__label
+          配送料の負担：
+          %span.required
+            ※必須
+          = f.select :fee, Item.fees.keys, { prompt: "", selected: @item.fee}, class: "fee-wrapper__fee form-control", required: "required"
+      
+      .wrapper.shipping_days-wrapper
+        %label.wrapper__label
+          発送日の目安：
+          %span.required
+            ※必須
+          = f.select :shipping_days, Item.shipping_days.keys, {prompt: "", selected: @item.shipping_days}, class: "shipping_days-wrapper__shipping-days form-control", required: "required"
+      .wrapper.area-wrapper
+        %label.wrapper__label
+          発送元の地域：
+          %span.required
+            ※必須
+          = f.select :area, Item.prefectures.keys, {prompt: 1, selected: @item.area}, class: "area-wrapper__area form-control", required: "required"
+      .form-separator
+
+      .wrapper.price-wrapper
+        %label.wrapper__label
+          価格：
+          %span.required
+            ※必須
+          = f.number_field :price, class: "price-wrapper__price form-control", required: "required"
+
+      .wrapper.submit-wrapper
+        = f.submit "更新する", class: "btn submit-wrapper__submit-btn"
+
+
+
+
+

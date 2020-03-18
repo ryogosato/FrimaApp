@@ -55,12 +55,10 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @brands = Brand.all
-    
     @category_parent_array = ["指定なし"]
     Category.where(ancestry: nil).each do |parent|
       @category_parent_array << parent.name
     end
-  
     @item.images.build
   end
 
@@ -73,10 +71,35 @@ class ItemsController < ApplicationController
       flash.now[:alert] = '画像を１枚以上添付してください'
       render :new
     end
-
   end
 
   def edit
+    # @images = Image.where(item_id: @item.id)
+    # num = 0
+    # while num <= @item.images.count do
+    #   @image = Image.find_by(item_id: @item.id)
+    #   num += 1
+    # end
+    @images = @item.images
+    @brands = Brand.all
+    # @brand = Brand.find(id: @item.brand_id)
+    @category_parent_array = ["指定なし"]
+    Category.where(ancestry: nil).each do |parent|
+      @category_parent_array << parent.name
+    end
+    
+    @item.images.build
+    # binding.pry
+  end
+
+  def update
+    @item = Item.find(params[:id])
+    if @item.update(item_params)
+      redirect_to item_path(@item)
+    else
+      flash.now[:alert] = '画像を１枚以上添付してください'
+      render :edit
+    end
   end
 
   def destroy

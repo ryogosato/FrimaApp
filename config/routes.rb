@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :items, only:[:show, :new, :create, :edit, :destroy] do
+  resources :items, only:[:show, :new, :create, :edit, :update, :destroy] do
     member do
       get 'confirm', to: 'items#confirm'
       post 'pay', to: 'items#pay'
