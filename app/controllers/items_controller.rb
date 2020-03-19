@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :destroy, :pay, :confirm, :done]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :pay, :confirm, :done]
 
   require 'payjp'
 
@@ -55,7 +55,9 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @brands = Brand.all
+    #セレクトボックスの初期値設定
     @category_parent_array = ["指定なし"]
+    #データベースから、親カテゴリーのみ抽出し、配列化
     Category.where(ancestry: nil).each do |parent|
       @category_parent_array << parent.name
     end
@@ -74,26 +76,31 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    # @images = Image.where(item_id: @item.id)
-    # num = 0
-    # while num <= @item.images.count do
-    #   @image = Image.find_by(item_id: @item.id)
-    #   num += 1
-    # end
     @images = @item.images
     @brands = Brand.all
-    # @brand = Brand.find(id: @item.brand_id)
-    @category_parent_array = ["指定なし"]
+
+    @grandchild_category = @item.category
+    @child_category = @grandchild_category.parent
+    @parent_category = @child_category.parent
+
+    @category_parent_array = []
     Category.where(ancestry: nil).each do |parent|
       @category_parent_array << parent.name
     end
-    
-    @item.images.build
-    # binding.pry
+
+    @category_children_array = []
+    Category.where(ancestry: @child_category.ancestry).each do |children|
+      @category_children_array << children
+    end
+
+    @category_grandchildren_array = []
+    Category.where(ancestry: @grandchild_category.ancestry).each do |grandchildren|
+      @category_grandchildren_array << grandchildren
+    end
   end
 
   def update
-    @item = Item.find(params[:id])
+
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
@@ -110,20 +117,26 @@ class ItemsController < ApplicationController
     end
   end
 
+    # 以下全て、formatはjsonのみ
+    # 親カテゴリーが選択された後に動くアクション
   def get_category_children
+    #選択された親カテゴリーに紐付く子カテゴリーの配列を取得
     @category_children = Category.find_by(name: "#{params[:parent_name]}", ancestry: nil).children
   end
 
+  # 子カテゴリーが選択された後に動くアクション
   def get_category_grandchildren
+    #選択された子カテゴリーに紐付く孫カテゴリーの配列を取得
     @category_grandchildren = Category.find("#{params[:child_id]}").children
+    #ancestryを導入しているので、".children"メソッドで、選択されたものの子カテゴリーの配列を取得する。
   end
 
   private
   def item_params
     params.require(:item).permit(
-      :name, :description, :price, :brand_id, :area, :condition, :fee,
+      :name, :description, :price, :brand_id, :area, :condition, :fee, :category_id,
       :shipping_days, images_attributes: [:content, :id, :_destroy]
-      ).merge(user_id: current_user.id, category_id: params[:category_id], brand_id: params[:item][:brand_id])
+      ).merge(user_id: current_user.id)
   end
 
   

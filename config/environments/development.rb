@@ -1,4 +1,6 @@
 Rails.application.configure do
+  config.assets.precompile += ['application.js']
+  config.assets.precompile += ['item/*.js']
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

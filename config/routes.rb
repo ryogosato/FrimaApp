@@ -26,7 +26,10 @@ Rails.application.routes.draw do
       get 'done', to: 'items#done'
       post   '/like/:item_id' => 'likes#like',   as: 'like'
       delete '/like/:item_id' => 'likes#unlike', as: 'unlike'
+      get 'get_category_children', defaults: { format: 'json' }
+      get 'get_category_grandchildren', defaults: { format: 'json' }
     end
+    #Ajaxで動くアクションのルートを作成
     collection do
       get 'get_category_children', defaults: { format: 'json' }
       get 'get_category_grandchildren', defaults: { format: 'json' }
