@@ -1,6 +1,8 @@
 $(function(){
   $(window).on('load', function(){
+    console.log(1);
     $(document).on('change', '.js-file_group input', function(e) {
+      console.log(5);
       $(".preview").parent().removeClass("img_field");
       var id = $('.img_field').attr('id').replace(/[^0-9]/g, '');
       var file = e.target.files[0];
@@ -25,6 +27,7 @@ $(function(){
     });
 
     const buildFileField = function(index){
+      console.log(2);
       var html = `<div class="image-wrapper__image-box__js js-file_group" data-index="${index}">
                     <label class="image-wrapper__image-box__js__label" for="item_images_attributes_${index}_content">
                       <div class="image-wrapper__image-box__js__label__image img_field" data-image="${index}" id="img_field--${index}" onclick="$('#file').click()">
@@ -44,8 +47,12 @@ $(function(){
 
 
     var fileIndex = [1,2,3,4,5,6,7,8,9,10];
+    lastIndex = $('.js-file_group:last').data('index');
+    fileIndex.splice(0, lastIndex);
+    $('.hidden-destroy').hide();
 
     $('#image-box').on('change', '.js-file', function(e){
+      console.log(3);
       var previewCount = $('.preview').length
       if( previewCount < 9 || $('#default-img').length == 0) {
         $('#image-box').append(buildFileField(fileIndex[$('.preview').length]));
@@ -55,16 +62,14 @@ $(function(){
     });
 
     $('#image-box').on('click', '.js-remove', function(){
+      console.log(4);
       const targetIndex = $(this).parent().data('index')
       const hiddenCheck = $(`input[data-index="${targetIndex}"].hidden-destroy`);
       if (hiddenCheck) hiddenCheck.prop('checked', true);
-
-      lastIndex = $('.js-file_group:last').data('index');
-      fileIndex.splice(0, lastIndex);
-      $('.hidden-destroy').hide();
+      console.log($(this).parent());
       $(this).parent().remove();
       if ($('.js-file').length == 0 || $('#default-img').length == 0){
-        $('#image-box').append(buildFileField(fileIndex[0]));
+        $('#image-box').append(buildFileField(fileIndex[0])); 
       };
     });
   });

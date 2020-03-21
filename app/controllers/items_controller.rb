@@ -97,15 +97,18 @@ class ItemsController < ApplicationController
     Category.where(ancestry: @grandchild_category.ancestry).each do |grandchildren|
       @category_grandchildren_array << grandchildren
     end
+    @item.images.build
   end
 
   def update
+    # binding.pry
 
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
+      
       flash.now[:alert] = '画像を１枚以上添付してください'
-      render :edit
+      redirect_to edit_item_path(@item)
     end
   end
 
