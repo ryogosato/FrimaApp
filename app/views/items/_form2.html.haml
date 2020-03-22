@@ -42,8 +42,8 @@
         = link_to "はじめての方へ", "#"
       %li.side-bar__group__list
         = link_to "ログアウト", "#"
-  .main-items
-    = form_with model: @item, local: true do |f|
+  -# .main-items
+  -#   = form_with model: @item, local: true do |f|
       .wrapper.image-wrapper
         #image-box.image-wrapper__image-box
           = f.fields_for :images do |i|
