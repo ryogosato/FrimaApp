@@ -101,12 +101,9 @@ class ItemsController < ApplicationController
   end
 
   def update
-    # binding.pry
-
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
-      
       flash.now[:alert] = '画像を１枚以上添付してください'
       redirect_to edit_item_path(@item)
     end

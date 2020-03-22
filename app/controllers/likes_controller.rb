@@ -16,5 +16,4 @@ class LikesController < ApplicationController
     @item = Item.find(params[:item_id])
     @id_name = "#like-link-#{@item.id}"
   end
-
 end

@@ -75,8 +75,6 @@
                 = i.label :content, class: "image-wrapper__image-box__js__label" do
                   .image-wrapper__image-box__js__label__image.img_field{id: "img_field--#{i.index}", onClick: "$('#file').click()"}
                     = image_tag asset_path(@images[i.index].content), class:"preview "
-                  = i.file_field :content, class: "image-wrapper__image-box__js__label__file js-file", id: "item_images_attributes_#{i.index}_content"
-
                 .js-remove
                   %span.js-remove__text
                     削除

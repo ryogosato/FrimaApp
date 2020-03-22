@@ -54,7 +54,7 @@ $(function(){
     $('#image-box').on('change', '.js-file', function(e){
       console.log(3);
       var previewCount = $('.preview').length
-      if( previewCount < 9 || $('#default-img').length == 0) {
+      if( previewCount < 10 || $('#default-img').length == 0) {
         $('#image-box').append(buildFileField(fileIndex[$('.preview').length]));
         fileIndex.shift();
         fileIndex.push(fileIndex[fileIndex.length - 1] + 1)
