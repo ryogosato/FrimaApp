@@ -27,15 +27,4 @@ class Item < ApplicationRecord
   accepts_nested_attributes_for :images, allow_destroy: true
   has_many :likes, dependent: :destroy
   has_many :liking_users, through: :likes, source: :user
-
-  # accepts_nested_attributes_for :images, reject_if: :reject_both_blank, allow_destroy: true
-
-  # def reject_both_blank(attributes)
-  #   if attributes[:_destroy]
-  #     attributes.merge!(_destroy: "1") if attributes[:content].blank?
-  #     !attributes[:content].blank?
-  #   else
-  #     attributes[:content].blank?
-  #   end
-  # end
 end

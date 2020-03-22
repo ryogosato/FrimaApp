@@ -42,27 +42,6 @@
         = link_to "はじめての方へ", "#"
       %li.side-bar__group__list
         = link_to "ログアウト", "#"
-
-  -# .main-items
-  -#   = form_with model: @item, local: true do |f|
-  -#     .wrapper.image-wrapper
-  -#       #image-box.image-wrapper__image-box
-  -#         = f.fields_for :images do |i|
-  -#           - if @item.persisted?
-  -#             = i.check_box :_destroy, data:{ index: i.index}, class: 'hidden-destroy'
-  -#           .image-wrapper__image-box__js.js-file_group{:id => "item_images_attributes_#{i.index}_id", data:{index: "#{i.index}"}}
-  -#             = i.label :content, class: "image-wrapper__image-box__js__label" do
-  -#               .image-wrapper__image-box__js__label__image.img_field{id: "img_field--#{i.index}", onClick: "$('#file').click()"}
-  -#                 - if @item.images[i.index][:content].present?
-  -#                   = image_tag asset_path(@images[i.index].content), class:"preview "
-                      
-  -#                 - else
-  -#                   = image_tag 'icon_camera.png', class: "image-wrapper__image-box__js__label__image__url", id: "default-img"
-  -#               = i.file_field :content, class: "image-wrapper__image-box__js__label__file js-file", id: "item_images_attributes_#{i.index}_content"
-  -#             .js-remove
-  -#               %span.js-remove__text
-  -#                 削除
-                
   .main-items
     = form_with model: @item, local: true do |f|
       .wrapper.image-wrapper
@@ -87,10 +66,6 @@
                 .js-remove
                   %span.js-remove__text
                     削除
-
-
-      
-
       .wrapper.name-wrapper
         %label.wrapper__label
           商品名：
